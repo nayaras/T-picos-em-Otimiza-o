@@ -13,19 +13,14 @@ import java.util.concurrent.TimeUnit;
 public class P2{
 
 	ArrayList<Integer> agendamentos = new ArrayList<Integer>(); //vetor para alocar tempos de inicios
-	ArrayList<Integer> pos = new ArrayList<Integer>();	
+	ArrayList<Integer> posicoes = new ArrayList<Integer>();
 
-	public ArrayList<Integer> resolve(ArrayList<Integer> entrada){
+	public int solucao_inicial(ArrayList<Integer> entrada, ArrayList<Integer> posicoes){
 	
 		int max = Collections.max(entrada);
 		int index = entrada.indexOf(max);
-		pos.add(index);
 		Collections.swap(entrada, 0, index);
-		
-		for(int i = 0; i < entrada.size(); ++i){
-			System.out.print(entrada.get(i) + " ");
-		}
-		System.out.println("\n");
+		Collections.swap(posicoes, 0, index);
 
 		int p1 = entrada.get(0);
 		int s_i = 0;
@@ -52,12 +47,11 @@ public class P2{
 			}
 			soma_atual = s_i + entrada.get(i);
 			
-			
 			System.out.print("s_: "+s_i + " |p_: " + entrada.get(i) + " | "+soma_atual + "\n");
-			
 			
 			if(pos_menor != i+1 && (i+1) < entrada.size()){
 				Collections.swap(entrada, i+1, pos_menor); //troca menor s_j encontrado de lugar com processamento da pos i+1
+				Collections.swap(posicoes, i+1, pos_menor);
 			}
 			
 			if(soma_atual > soma)
@@ -71,25 +65,46 @@ public class P2{
 		
 		soma_atual = s_j +entrada.get(entrada.size()-1); //calcula soma da ultima pos do vetor
 		System.out.print("s_: "+s_j + " |p_: " + entrada.get(entrada.size()-1) + " | "+  soma_atual + "\n");
+		
 		if(soma_atual > soma)
-			System.out.println("Ponto de termino da ultima tarefa executada = "+soma_atual);
+			return soma_atual;
 		else
-			System.out.println("Ponto de termino da ultima tarefa executada = "+soma);
-		
-		
-		return pos;
-
+			return soma;		
 	}
+	public int executa(ArrayList<Integer> entrada){
+		int s_i = 0;
+		int s_j = 0;
+		int soma = s_i + entrada.get(0);
+		System.out.print("s_: "+s_j + " |p_: " + entrada.get(0) + " | "+soma + "\n");
+		for(int i = 0; i < (entrada.size()-1); ++i){
+			int min = Math.min(entrada.get(i), entrada.get(i+1));
+				
+			s_j = Math.abs(min - s_i);
+			if(Math.abs(s_i - s_j) < min)
+				s_j = min + s_i;
+			
+			s_i = s_j;
+				
+			if((s_j+entrada.get(i+1)) > soma){
+				soma = s_j + entrada.get(i+1);
+			}
+			System.out.print("s_: "+s_j + " |p_: " + entrada.get(i+1) + " | "+ (s_j+entrada.get(i+1)) + "\n");
+			
+		}
+	
+		return soma;
+	}
+	
 
 
 	public static void main(String[] args) throws ParseException {
 	
-
-		P2 inst = new P2();
-        
 		long start = System.nanoTime(); //tempo inicial
+		P2 inst = new P2();
 		ArrayList<Integer> entrada = new ArrayList<Integer>();
-		ArrayList<Integer> sol_inicial = new ArrayList<Integer>();
+		
+		int sol_inicial = 0;
+		
 		
 		//leitura do arquivo de entrada	
 		if (args.length == 1) {
@@ -110,11 +125,32 @@ public class P2{
 			}
 		}
 		entrada.remove(0); //remove o tamanho 
-		sol_inicial = inst.resolve(entrada);
-
-		for(int i = 0; i < sol_inicial.size(); ++i){
-			System.out.print(sol_inicial.get(i) + " ");
+		for(int i = 0; i < entrada.size(); ++i){
+			inst.posicoes.add(i);
+			System.out.print(entrada.get(i) + " ");
 		}
+		System.out.println("\n");
+		
+		sol_inicial = inst.solucao_inicial(entrada, inst.posicoes); //ordem inicial
+		System.out.println("Ponto de termino da ultima tarefa executada = "+ sol_inicial);
+		int resp = 0;
+		for(int i = 0; i < (entrada.size()-1); ++i){
+		
+			Collections.swap(entrada, i, i+1);
+			
+			System.out.print("Entrada" +i+ " \n");
+			resp = inst.executa(entrada);
+			System.out.println("Resp "+resp);
+			if(resp > sol_inicial){
+				Collections.swap(entrada, i, i+1);
+			}
+			else if(resp < sol_inicial){
+				System.out.println("ACHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOU");
+				break;
+			}
+			
+		}
+
 		
 		long finish = System.nanoTime(); //tempo final
 		long time = (finish - start);
@@ -124,3 +160,12 @@ public class P2{
 		
 	}
 }
+
+/*
+for(int i = 0; i < inst.posicoes.size(); ++i){
+			System.out.print(inst.posicoes.get(i) + " ");
+		}
+System.out.print("\n");
+		for(int i = 0; i < inst.posicoes.size(); ++i){
+			System.out.print(entrada.get(i) + "   ");
+		}*/
