@@ -133,13 +133,22 @@ public class P2{
 		}
 		System.out.println("\n");
 		
+		int size = entrada.size();
+		int [][] lista_tabu = new int[size][size];
+		
+		for(int i = 0; i < size; ++i){
+			for(int j = 0; j < size; ++j){
+				lista_tabu[i][j] = 0;
+			}
+		}
+		
 		sol_inicial = inst.solucao_inicial(entrada, inst.posicoes); //ordem inicial
 		System.out.println("Ponto de termino da ultima tarefa executada = "+ sol_inicial);
 		int resp = 0;
 		//int aux = 0;
 		//int i = 0;
 		
-			for(int i = 0; i < (entrada.size()-1); i++){
+			for(int i = 0; i < (entrada.size()-1); ++i){
 				if(i == 0)
 					System.out.println("------------------------------------------------------------------------------------");	
 				outerloop:{
@@ -155,7 +164,6 @@ public class P2{
 					System.out.println("ACHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOU");
 					sol_inicial = resp;
 					i=-1;
-					//i = 0;
 					break outerloop;
 				}
 				}	
@@ -173,11 +181,3 @@ public class P2{
 	}
 }
 
-/*
-for(int i = 0; i < inst.posicoes.size(); ++i){
-			System.out.print(inst.posicoes.get(i) + " ");
-		}
-System.out.print("\n");
-		for(int i = 0; i < inst.posicoes.size(); ++i){
-			System.out.print(entrada.get(i) + "   ");
-		}*/
