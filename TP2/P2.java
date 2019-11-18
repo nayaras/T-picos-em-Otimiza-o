@@ -47,7 +47,7 @@ public class P2{
 			}
 			soma_atual = s_i + entrada.get(i);
 			
-			System.out.print("s_: "+s_i + " |p_: " + entrada.get(i) + " | "+soma_atual + "\n");
+			//System.out.print("s_: "+s_i + " |p_: " + entrada.get(i) + " | "+soma_atual + "\n");
 			
 			if(pos_menor != i+1 && (i+1) < entrada.size()){
 				Collections.swap(entrada, i+1, pos_menor); //troca menor s_j encontrado de lugar com processamento da pos i+1
@@ -64,7 +64,7 @@ public class P2{
 		}
 		
 		soma_atual = s_j +entrada.get(entrada.size()-1); //calcula soma da ultima pos do vetor
-		System.out.print("s_: "+s_j + " |p_: " + entrada.get(entrada.size()-1) + " | "+  soma_atual + "\n");
+		//System.out.print("s_: "+s_j + " |p_: " + entrada.get(entrada.size()-1) + " | "+  soma_atual + "\n");
 		
 		if(soma_atual > soma)
 			return soma_atual;
@@ -76,7 +76,7 @@ public class P2{
 		int s_j = 0;
 		int soma = s_i + entrada.get(0);
 		//System.out.print("s_: "+s_j + " |p_: " + entrada.get(0) + " | "+soma + "\n");
-		System.out.print(entrada.get(0) + "  ");
+		//System.out.print(entrada.get(0) + "  ");
 		for(int i = 0; i < (entrada.size()-1); ++i){
 			int min = Math.min(entrada.get(i), entrada.get(i+1));
 				
@@ -89,7 +89,7 @@ public class P2{
 			if((s_j+entrada.get(i+1)) > soma){
 				soma = s_j + entrada.get(i+1);
 			}
-			System.out.print(entrada.get(i+1) + "  ");
+			//System.out.print(entrada.get(i+1) + "  ");
 			//System.out.print("s_: "+s_j + " |p_: " + entrada.get(i+1) + " | "+ (s_j+entrada.get(i+1)) + "\n");
 			
 		}
@@ -129,40 +129,34 @@ public class P2{
 		entrada.remove(0); //remove o tamanho 
 		for(int i = 0; i < entrada.size(); ++i){
 			inst.posicoes.add(i);
-			System.out.print(entrada.get(i) + " ");
+			//System.out.print(entrada.get(i) + " ");
 		}
-		System.out.println("\n");
+		//System.out.println("\n");
 		
 		sol_inicial = inst.solucao_inicial(entrada, inst.posicoes); //ordem inicial
-		System.out.println("Ponto de termino da ultima tarefa executada = "+ sol_inicial);
+		System.out.println("Solucao inicial = "+ sol_inicial);
 		int resp = 0;
-		//int aux = 0;
-		//int i = 0;
 		
+		boolean improved = true;
+		int sol_atual = sol_inicial;
+		while(improved){
+			improved = false;
 			for(int i = 0; i < (entrada.size()-1); i++){
-				if(i == 0)
-					System.out.println("------------------------------------------------------------------------------------");	
-				outerloop:{
 				Collections.swap(entrada, i, i+1);
-				
-				System.out.print("Entrada" +i+ " \n");
+
 				resp = inst.executa(entrada);
-				System.out.println("Resp "+resp);
-				if(resp > sol_inicial){
+
+				if(resp > sol_atual){
 					Collections.swap(entrada, i, i+1);
 				}
-				else if(resp < sol_inicial){
-					System.out.println("ACHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOU");
-					sol_inicial = resp;
-					i=-1;
-					//i = 0;
-					break outerloop;
+				else if(resp < sol_atual){
+					sol_atual = resp;
+					improved = true;
 				}
-				}	
 			}
-		
-		System.out.println("Melhor solucao: "+sol_inicial);
-
+		}
+		System.out.println("\nMelhor solucao: "+sol_atual);	
+	
 		
 		long finish = System.nanoTime(); //tempo final
 		long time = (finish - start);
