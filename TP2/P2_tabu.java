@@ -96,7 +96,6 @@ public class P2_tabu{
 		return soma;
 	}
 	
-
 	public static void main(String[] args) throws ParseException {
 	
 		long start = System.nanoTime(); //tempo inicial
@@ -105,11 +104,12 @@ public class P2_tabu{
 		ArrayList<Integer> s_linha_pos;
 		ArrayList<Integer> s_linha_proc;
 		int sol_atual = 0;
-		
+		int tabuTenure = 0;
 		
 		//leitura do arquivo de entrada	
-		if (args.length == 1) {
+		if (args.length == 2) {
 			try {
+				tabuTenure = Integer.valueOf(args[1]);
 				FileReader arq = new FileReader(args[0]);
 				BufferedReader lerArq = new BufferedReader(arq);
 				String linha = lerArq.readLine(); // lê a primeira linha (tamanho da entrada)
@@ -121,7 +121,7 @@ public class P2_tabu{
 				}
 				arq.close();
 			} catch (IOException e) {
-				System.err.printf("Erro na abertura do arquivo: %s. Abrir com: java P1 entrada.extensao \n",
+				System.err.printf("Erro na abertura do arquivo: %s. Abrir com: java P1 entrada.extensao tabuTenureValue \n",
 				e.getMessage());
 			}
 		}
@@ -139,10 +139,11 @@ public class P2_tabu{
 		int iter = 0;
 		int melhorIter = 0;
 		boolean improved = true;
-		int tabuTenure = 4;
+		
 		
 		int size = entrada.size();
 		int [][] lista_tabu = new int[size][size];
+
 		
 		for(int i = 0; i < size; ++i){
 			for(int j = 0; j < size; ++j){
@@ -151,16 +152,18 @@ public class P2_tabu{
 		}
 		
 		long time_count = 0;
-		long time_ms2 = 0;
+		long time_ms2 = 0L;
 		boolean aux = true;
-		ArrayList<Integer> melhor_vizinho_pos = new ArrayList<Integer>(entrada);
+		ArrayList<Integer> melhor_vizinho_pos = new ArrayList<Integer>(inst.posicoes);
 		ArrayList<Integer> melhor_vizinho_proc = new ArrayList<Integer>(entrada);
 		int melhor_sol = 0;
 		int pos_1 = 0;
 		int pos_2 = 0;
-		while(time_ms2 < 200){
 
-			for(int i = 0; i < (entrada.size()-1); i++){
+		while(time_ms2 < 1000){
+
+			for(int i = 0; i < (entrada.size()-2); ++i){
+
 				//contarTempo
 				time_count = System.nanoTime();
 				long time2 = (time_count - start);
@@ -170,7 +173,9 @@ public class P2_tabu{
 					break;
 					
 				//System.out.println("Time count "+ time_ms2);
-				if((iter - lista_tabu[inst.posicoes.get(i)][inst.posicoes.get(i+1)]) > tabuTenure)
+				int p1 = inst.posicoes.get(i);
+				int p2 = inst.posicoes.get(i+1);
+				if((iter - lista_tabu[p1][p2]) > tabuTenure){
 				
 					s_linha_pos = new ArrayList<Integer>(inst.posicoes);
 					s_linha_proc = new ArrayList<Integer>(entrada);
@@ -187,7 +192,6 @@ public class P2_tabu{
 						aux = false;
 					}
 					if(resp < melhor_sol){
-						//System.out.println("entrou");
 						melhor_vizinho_pos = s_linha_pos;
 						melhor_vizinho_proc = s_linha_proc;
 						melhor_sol = resp;
@@ -196,13 +200,16 @@ public class P2_tabu{
 						
 					}
 				}
-				entrada = melhor_vizinho_proc;
-				inst.posicoes = melhor_vizinho_pos;
-				lista_tabu[inst.posicoes.get(pos_1)][inst.posicoes.get(pos_2)] = iter;
-				iter++;
-				
+			}
+			iter++;
+			entrada = melhor_vizinho_proc;
+			inst.posicoes = melhor_vizinho_pos;
+			lista_tabu[inst.posicoes.get(pos_1)][inst.posicoes.get(pos_2)] = iter;
+			
 		}
 		System.out.println("Melhor solucao: "+melhor_sol);
+		
+		
 		
 
 
@@ -217,38 +224,3 @@ public class P2_tabu{
 }
 
 
-/*lista_tabu[inst.posicoes.get(i)][inst.posicoes.get(i+1)] = iter;
-				if(iter - lista_tabu[i][i+1] > tabuTenure){*/
-		
-		
-			/*
-			int iter = 0;
-			boolean improved = true;
-			while(imrpoved) {
-				iter++;
-				improved = false;
-				for(todos pares) {
-					//so pra tabu if novo
-					if(iterAtual - tabu[par.first, par.second] > tabuTenure) {}
-						novo = swap;
-						if(novo < corrente) {//na tabu esse if sai, pra permitir piora
-							improved = true;
-							break; //sai do for//na tabu sai
-						}
-					}
-				}
-			}
-			*/	
-			
-			
-/*
-		System.out.print("\n");
-		for(int i = 0; i < inst.posicoes.size(); ++i){
-			System.out.print(inst.posicoes.get(i) + " ");
-		}
-		System.out.print("\n");
-		for(int i = 0; i < inst.posicoes.size(); ++i){
-			System.out.print(entrada.get(i) + " ");
-		}
-		System.out.println("\nSolucao inicial: "+sol_atual+"\n");
-		*/	

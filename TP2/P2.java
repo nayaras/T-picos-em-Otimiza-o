@@ -71,34 +71,26 @@ public class P2{
 		else
 			return soma;		
 	}
+	
+	
 	public int executa(ArrayList<Integer> entrada){
 		int s_i = 0;
 		int s_j = 0;
 		int soma = s_i + entrada.get(0);
-		//System.out.print("s_: "+s_j + " |p_: " + entrada.get(0) + " | "+soma + "\n");
-		//System.out.print(entrada.get(0) + "  ");
 		for(int i = 0; i < (entrada.size()-1); ++i){
-			int min = Math.min(entrada.get(i), entrada.get(i+1));
-				
+			int min = Math.min(entrada.get(i), entrada.get(i+1));	
 			s_j = Math.abs(min - s_i);
 			if(Math.abs(s_i - s_j) < min)
 				s_j = min + s_i;
-			
 			s_i = s_j;
 				
 			if((s_j+entrada.get(i+1)) > soma){
 				soma = s_j + entrada.get(i+1);
 			}
-			//System.out.print(entrada.get(i+1) + "  ");
-			//System.out.print("s_: "+s_j + " |p_: " + entrada.get(i+1) + " | "+ (s_j+entrada.get(i+1)) + "\n");
-			
 		}
-	
 		return soma;
 	}
 	
-
-
 	public static void main(String[] args) throws ParseException {
 	
 		long start = System.nanoTime(); //tempo inicial
@@ -106,7 +98,6 @@ public class P2{
 		ArrayList<Integer> entrada = new ArrayList<Integer>();
 		
 		int sol_inicial = 0;
-		
 		
 		//leitura do arquivo de entrada	
 		if (args.length == 1) {
@@ -129,21 +120,17 @@ public class P2{
 		entrada.remove(0); //remove o tamanho 
 		for(int i = 0; i < entrada.size(); ++i){
 			inst.posicoes.add(i);
-			//System.out.print(entrada.get(i) + " ");
 		}
-		//System.out.println("\n");
-		
+
 		sol_inicial = inst.solucao_inicial(entrada, inst.posicoes); //ordem inicial
 		System.out.println("Solucao inicial = "+ sol_inicial);
 		int resp = 0;
-		
 		boolean improved = true;
 		int sol_atual = sol_inicial;
 		while(improved){
 			improved = false;
 			for(int i = 0; i < (entrada.size()-1); i++){
 				Collections.swap(entrada, i, i+1);
-
 				resp = inst.executa(entrada);
 
 				if(resp > sol_atual){
@@ -155,7 +142,7 @@ public class P2{
 				}
 			}
 		}
-		System.out.println("\nMelhor solucao: "+sol_atual);	
+		System.out.println("\nMelhor solucao = "+sol_atual);	
 	
 		
 		long finish = System.nanoTime(); //tempo final
@@ -167,11 +154,3 @@ public class P2{
 	}
 }
 
-/*
-for(int i = 0; i < inst.posicoes.size(); ++i){
-			System.out.print(inst.posicoes.get(i) + " ");
-		}
-System.out.print("\n");
-		for(int i = 0; i < inst.posicoes.size(); ++i){
-			System.out.print(entrada.get(i) + "   ");
-		}*/
