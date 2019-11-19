@@ -49,14 +49,11 @@ public class P2_tabu{
 				}
 			}
 			soma_atual = s_i + entrada.get(i);
-			
 			//System.out.print("s_: "+s_i + " |p_: " + entrada.get(i) + " | "+soma_atual + "\n");
-			
 			if(pos_menor != i+1 && (i+1) < entrada.size()){
 				Collections.swap(entrada, i+1, pos_menor); //troca menor s_j encontrado de lugar com processamento da pos i+1
 				Collections.swap(posicoes, i+1, pos_menor);
 			}
-			
 			if(soma_atual > soma)
 				soma = soma_atual;
 				
@@ -65,7 +62,6 @@ public class P2_tabu{
 			
 			menor = Integer.MAX_VALUE;
 		}
-		
 		soma_atual = s_j +entrada.get(entrada.size()-1); //calcula soma da ultima pos do vetor
 		//System.out.print("s_: "+s_j + " |p_: " + entrada.get(entrada.size()-1) + " | "+  soma_atual + "\n");
 		
@@ -74,7 +70,6 @@ public class P2_tabu{
 		else
 			return soma;		
 	}
-	
 	/********
 		Executa
 	********/
@@ -95,7 +90,6 @@ public class P2_tabu{
 		}
 		return soma;
 	}
-	
 	public static void main(String[] args) throws ParseException {
 	
 		long start = System.nanoTime(); //tempo inicial
@@ -131,26 +125,20 @@ public class P2_tabu{
 			inst.posicoes.add(i);
 		}
 		
-		
 		sol_atual = inst.solucao_inicial(entrada, inst.posicoes); //ordem inicial
-		
 
 		int resp = 0;
 		int iter = 0;
 		int melhorIter = 0;
 		boolean improved = true;
-		
-		
 		int size = entrada.size();
 		int [][] lista_tabu = new int[size][size];
-
 		
 		for(int i = 0; i < size; ++i){
 			for(int j = 0; j < size; ++j){
 				lista_tabu[i][j] = 0;
 			}
 		}
-		
 		long time_count = 0;
 		long time_ms2 = 0L;
 		boolean aux = true;
@@ -161,18 +149,16 @@ public class P2_tabu{
 		int pos_2 = 0;
 
 		while(time_ms2 < 1000){
-
 			for(int i = 0; i < (entrada.size()-2); ++i){
 
 				//contarTempo
 				time_count = System.nanoTime();
 				long time2 = (time_count - start);
 				time_ms2 = TimeUnit.NANOSECONDS.toMillis(time2);
-				//System.out.println("Time count "+ time_ms2);
+
 				if(time_ms2 > 200)
 					break;
-					
-				//System.out.println("Time count "+ time_ms2);
+
 				int p1 = inst.posicoes.get(i);
 				int p2 = inst.posicoes.get(i+1);
 				if((iter - lista_tabu[p1][p2]) > tabuTenure){
@@ -197,7 +183,6 @@ public class P2_tabu{
 						melhor_sol = resp;
 						pos_1 = i;
 						pos_2 = i+1;
-						
 					}
 				}
 			}
@@ -209,18 +194,9 @@ public class P2_tabu{
 		}
 		System.out.println("Melhor solucao: "+melhor_sol);
 		
-		
-		
-
-
-		
 		long finish = System.nanoTime(); //tempo final
 		long time = (finish - start);
 		long time_ms = TimeUnit.NANOSECONDS.toMillis(time);
-		
 		System.out.println("\nTempo de execução (ms): "+ time_ms);
-		
 	}
 }
-
-
