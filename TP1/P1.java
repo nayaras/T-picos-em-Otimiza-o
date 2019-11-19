@@ -24,7 +24,7 @@ public class P1{
 				FileReader arq = new FileReader(args[0]);
 				BufferedReader lerArq = new BufferedReader(arq);
 				String linha = lerArq.readLine(); // lê a primeira linha (tamanho da entrada)
-        		System.out.println("\nEntrada: ");
+        		//System.out.println("\nEntrada: ");
 				while (linha != null) {
 					//System.out.printf("%s\n", linha);
 					entrada.add(Integer.parseInt(linha));
@@ -41,11 +41,6 @@ public class P1{
 		int max = Collections.max(entrada);
 		int index = entrada.indexOf(max);
 		Collections.swap(entrada, 0, index);
-		
-		for(int i = 0; i < entrada.size(); ++i){
-			System.out.print(entrada.get(i) + " ");
-		}
-		System.out.println("\n");
 
 		int p1 = entrada.get(0);
 		int s_i = 0;
@@ -72,8 +67,7 @@ public class P1{
 			soma_atual = s_i + entrada.get(i);
 			
 			
-			System.out.print("s_: "+s_i + " |p_: " + entrada.get(i) + " | "+soma_atual + "\n");
-			
+			//System.out.print("s_: "+s_i + " |p_: " + entrada.get(i) + " | "+soma_atual + "\n");
 			
 			if(pos_menor != i+1 && (i+1) < entrada.size()){
 				Collections.swap(entrada, i+1, pos_menor); //troca menor s_j encontrado de lugar com processamento da pos i+1
@@ -88,7 +82,7 @@ public class P1{
 		}
 		
 		soma_atual = s_j +entrada.get(entrada.size()-1); //calcula soma da ultima pos do vetor
-		System.out.print("s_: "+s_j + " |p_: " + entrada.get(entrada.size()-1) + " | "+  soma_atual + "\n");
+		//System.out.print("s_: "+s_j + " |p_: " + entrada.get(entrada.size()-1) + " | "+  soma_atual + "\n");
 		if(soma_atual > soma)
 			System.out.println("Ponto de termino da ultima tarefa executada = "+soma_atual);
 		else
