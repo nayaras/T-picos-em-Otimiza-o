@@ -135,6 +135,7 @@ public class P3{
 		ArrayList<Integer> pos_random = new ArrayList<Integer>();
 		ArrayList<Integer> rank_final = new ArrayList<Integer>();
 		ArrayList<Double> pi = new ArrayList<Double>();
+		ArrayList<Double> ci = new ArrayList<Double>();
 		
 		int sol_inicial = 0;
 		
@@ -187,10 +188,21 @@ public class P3{
 		}
 		rank_final = inst.ranking(inst.solucoes);
 		
-		pi = inst.probabilidade(1.5, (int)inst.solucoes.size(), rank_final);
+		pi = inst.probabilidade(2.0, (int)inst.solucoes.size(), rank_final);
 		
-		
-		//Cum(i) = cum(i-1) + p(i)
+		//probabilidaade comulativa
+		ci.add(pi.get(0));
+		for(int i = 1; i < pi.size(); ++i){
+			ci.add(pi.get(i)+ci.get(i-1));
+		}
+		//random
+		Random r = new Random(); 
+        double num_sorteio = r.nextDouble();
+
+        if(num_sorteio < 1/entrada.size()){//faz swap
+        	System.out.println("Num sorteado: "+ num_sorteio);
+        }
+        
 		
 		
 		
@@ -225,5 +237,10 @@ for(int i = 0; i < 40; ++i){
 		for(int j = 0; j < pi.size(); ++j){
 			System.out.print(pi.get(j)+" ");
 		}
+		for(int i = 0; i < ci.size(); ++i){
+			System.out.print(ci.get(i)+ " ");
+		}
+		System.out.println();
+		
 
 */
